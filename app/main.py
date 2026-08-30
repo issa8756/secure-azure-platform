@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -15,8 +16,11 @@ def health():
 
 @app.get("/info")
 def info():
-    return {"name": "secure-azure-platform", "version": "0.1"}
-
+    return {
+        "name": "secure-azure-platform",
+        "version": "0.1",
+        "environment": os.getenv("APP_ENV", "development")
+    }
 
 @app.post("/messages")
 def create_message(data: Message):
