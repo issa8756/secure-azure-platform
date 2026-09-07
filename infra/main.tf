@@ -42,3 +42,17 @@ resource "azurerm_subnet" "main" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = ["10.10.1.0/24"]
 }
+resource "azurerm_container_registry" "main" {
+  name                = "acrsecureplatformdev"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  sku                 = "Standard"
+  admin_enabled       = false
+
+  tags = {
+    project     = "secure-azure-platform"
+    environment = "dev"
+    managed_by  = "terraform"
+    owner       = "issa"
+  }
+}
