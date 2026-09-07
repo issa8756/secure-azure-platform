@@ -14,6 +14,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.1"
+
+      - name: Check Terraform formatting
+        working-directory: infra
+        run: terraform fmt -check
+
+      - name: Initialize Terraform
+        working-directory: infra
+        run: terraform init
+
+      - name: Validate Terraform
+        working-directory: infra
+        run: terraform validate
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
