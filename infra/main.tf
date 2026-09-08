@@ -56,3 +56,28 @@ resource "azurerm_container_registry" "main" {
     owner       = "issa"
   }
 }
+resource "azurerm_user_assigned_identity" "github_actions" {
+  name                = "id-github-actions-dev"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  tags = {
+    project     = "secure-azure-platform"
+    environment = "dev"
+    managed_by  = "terraform"
+    owner       = "issa"
+  }
+}
+resource "azurerm_federated_identity_credential" "github_actions" {
+  name                      = "github-actions-main"
+  user_assigned_identity_id = azurerm_user_assigned_identity.github_actions.id
+
+  audience = ["api://AzureADTokenExchange"]
+  issuer   = "https://token.actions.githubusercontent.com"
+  subject  = "repo:issa8756/secure-azure-platform:ref:refs/heads/main"
+}
+resource "azurerm_role_assignment" "github_actions_acr_push" {
+  scope                = azurerm_container_registry.main.id
+  role_definition_name = "AcrPush"
+  principal_id         = azurerm_user_assigned_identity.github_actions.principal_id
+}
