@@ -74,7 +74,7 @@ resource "azurerm_federated_identity_credential" "github_actions" {
 
   audience = ["api://AzureADTokenExchange"]
   issuer   = "https://token.actions.githubusercontent.com"
-  subject  = "repo:issa8756/secure-azure-platform:ref:refs/heads/main"
+  subject  = "repo:issa8756@181845721/secure-azure-platform@1347115141:ref:refs/heads/main"
 }
 resource "azurerm_role_assignment" "github_actions_acr_push" {
   scope                = azurerm_container_registry.main.id
